@@ -1,5 +1,6 @@
 from app.core.logger import logger
 from app.exports.markdown_exporter import MarkdownExporter
+from app.exports.pdf_exporter import PDFExporter
 from app.services.llm_service import LLMService
 from app.tools.search import SearchTool
 
@@ -13,6 +14,7 @@ class ResearchService:
         self.search = SearchTool()
         self.llm = LLMService()
         self.exporter = MarkdownExporter()
+        self.pdf_exporter = PDFExporter()
 
         logger.info("Research Service initialized.")
 
@@ -83,7 +85,13 @@ If relevant, reference the source URLs naturally in your answer.
         self.exporter.export(
             title=query,
             report=final_report,
-        ) 
+        )
+        # Export PDF
+        self.pdf_exporter.export(
+            title=query,
+            report=final_report,
+            )
+
 
         logger.info("Research completed.")
 
