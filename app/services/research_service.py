@@ -1,4 +1,5 @@
 from app.core.logger import logger
+from app.exports.markdown_exporter import MarkdownExporter
 from app.services.llm_service import LLMService
 from app.tools.search import SearchTool
 
@@ -11,6 +12,7 @@ class ResearchService:
     def __init__(self) -> None:
         self.search = SearchTool()
         self.llm = LLMService()
+        self.exporter = MarkdownExporter()
 
         logger.info("Research Service initialized.")
 
@@ -77,7 +79,14 @@ If relevant, reference the source URLs naturally in your answer.
                 f"{index}. {result['title']}\n"
                 f"{result['url']}\n\n"
             )
+        final_report = response + sources
+        self.exporter.export(
+            title=query,
+            report=final_report,
+        ) 
 
         logger.info("Research completed.")
+
+        return final_report
 
         return response + sources
