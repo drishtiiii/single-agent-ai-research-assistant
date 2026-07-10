@@ -1,24 +1,12 @@
-from app.core.config import settings
 from app.llm.base import BaseLLM
-from app.llm.gemini_provider import GeminiProvider
-from app.llm.openai_provider import OpenAIProvider
+from app.llm.groq_provider import GroqProvider
 
 
 class LLMFactory:
     """
-    Factory responsible for creating LLM providers.
+    Factory responsible for creating the configured LLM.
     """
 
     @staticmethod
     def create() -> BaseLLM:
-        provider = settings.LLM_PROVIDER.lower()
-
-        if provider == "gemini":
-            return GeminiProvider()
-
-        if provider == "openai":
-            return OpenAIProvider()
-
-        raise ValueError(
-            f"Unsupported LLM provider: {provider}"
-        )
+        return GroqProvider()

@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # ==========================
     # LLM Configuration
     # # ==========================
-    # LLM_PROVIDER: str = "groq"
+    LLM_PROVIDER: str = "groq"
     LLM_MODEL: str = "llama-3.3-70b-versatile"
     GROQ_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
