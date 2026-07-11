@@ -4,6 +4,8 @@ from fastapi import FastAPI
 
 from app.core.config import settings
 from app.core.logger import logger
+from app.database import models
+from app.database.database import Base, engine
 
 
 @asynccontextmanager
@@ -13,6 +15,9 @@ async def lifespan(app: FastAPI):
     """
 
     logger.info(f"{settings.APP_NAME} starting up...")
+
+    # Create database tables
+    Base.metadata.create_all(bind=engine)
 
     # Future startup tasks:
     # - Initialize LLM clients

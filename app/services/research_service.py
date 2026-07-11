@@ -1,6 +1,9 @@
 from app.core.logger import logger
+from app.database.crud import create_research_history
+from app.database.database import SessionLocal
 from app.exports.markdown_exporter import MarkdownExporter
 from app.exports.pdf_exporter import PDFExporter
+from app.prompts.research_prompt import build_research_prompt
 from app.services.llm_service import LLMService
 from app.tools.search import SearchTool
 
@@ -45,29 +48,12 @@ class ResearchService:
                 f"Content: {result['body']}\n"
             )
 
-        # Build the LLM prompt
-        prompt = f"""
-You are an expert AI Research Assistant.
-
-Answer the user's question using ONLY the web search results below.
-
-User Question:
-{query}
-
-Search Results:
-{context}
-
-Write a professional research report with:
-
-1. Executive Summary
-2. Key Findings
-3. Detailed Explanation
-4. Conclusion
-
-If relevant, reference the source URLs naturally in your answer.
-"""
-
         logger.info("Generating research report...")
+
+        prompt = build_research_prompt(
+            query=query,
+            context=context,
+        )
 
         response = await self.llm.generate_response(
             prompt=prompt,
@@ -81,20 +67,35 @@ If relevant, reference the source URLs naturally in your answer.
                 f"{index}. {result['title']}\n"
                 f"{result['url']}\n\n"
             )
+
         final_report = response + sources
-        self.exporter.export(
+
+        # Export Markdown
+        markdown_path = self.exporter.export(
             title=query,
             report=final_report,
         )
+
         # Export PDF
-        self.pdf_exporter.export(
+        pdf_path = self.pdf_exporter.export(
             title=query,
             report=final_report,
-            )
+        )
 
+        # Save to database
+        db = SessionLocal()
+
+        try:
+            create_research_history(
+                db=db,
+                query=query,
+                report=final_report,
+                markdown_path=markdown_path,
+                pdf_path=pdf_path,
+            )
+        finally:
+            db.close()
 
         logger.info("Research completed.")
 
         return final_report
-
-        return response + sources
