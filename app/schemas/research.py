@@ -38,3 +38,17 @@ class ResearchHistoryItem(BaseModel):
 class ResearchHistoryResponse(BaseModel):
     success: bool
     history: list[ResearchHistoryItem]
+class ResearchDetailResponse(BaseModel):
+    """
+    Response model for a single research report.
+    """
+
+    success: bool
+    history: ResearchHistoryItem
+class DeleteResearchResponse(BaseModel):
+    """
+    Response returned after deleting a report.
+    """
+
+    success: bool
+    message: str
