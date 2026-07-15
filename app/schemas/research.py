@@ -1,13 +1,37 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 
 # -----------------------------
 # Research Request
 # -----------------------------
 class ResearchRequest(BaseModel):
-    query: str
+    query: str = Field(
+        ...,
+        min_length=5,
+        max_length=500,
+        description="Research query",
+        examples=[
+            "Latest developments in Quantum Computing",
+        ],
+    )
+
+    @field_validator("query")
+    @classmethod
+    def validate_query(
+        cls,
+        value: str,
+    ) -> str:
+
+        value = value.strip()
+
+        if not value:
+            raise ValueError(
+                "Query cannot be empty."
+            )
+
+        return value
 
 
 # -----------------------------
@@ -24,9 +48,11 @@ class ResearchResponse(BaseModel):
 class ResearchHistoryItem(BaseModel):
     id: int
     query: str
+    status: str
     markdown_path: str | None = None
     pdf_path: str | None = None
     created_at: datetime
+
 
     class Config:
         from_attributes = True
@@ -38,17 +64,19 @@ class ResearchHistoryItem(BaseModel):
 class ResearchHistoryResponse(BaseModel):
     success: bool
     history: list[ResearchHistoryItem]
-class ResearchDetailResponse(BaseModel):
-    """
-    Response model for a single research report.
-    """
 
+
+# -----------------------------
+# Research Detail Response
+# -----------------------------
+class ResearchDetailResponse(BaseModel):
     success: bool
     history: ResearchHistoryItem
-class DeleteResearchResponse(BaseModel):
-    """
-    Response returned after deleting a report.
-    """
 
+
+# -----------------------------
+# Delete Research Response
+# -----------------------------
+class DeleteResearchResponse(BaseModel):
     success: bool
     message: str

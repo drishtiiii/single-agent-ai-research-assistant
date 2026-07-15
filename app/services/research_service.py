@@ -1,5 +1,8 @@
 from app.core.logger import logger
-from app.database.crud import create_research_history
+from app.database.crud import (
+    create_research_history,
+    update_research_status,
+)
 from app.database.database import SessionLocal
 from app.exports.markdown_exporter import MarkdownExporter
 from app.exports.pdf_exporter import PDFExporter
@@ -31,71 +34,94 @@ class ResearchService:
 
         logger.info(f"Research started for: {query}")
 
-        # Search the web
-        search_results = self.search.search(
-            query=query,
-            max_results=5,
-        )
-
-        # Build search context
-        context = ""
-
-        for index, result in enumerate(search_results, start=1):
-            context += (
-                f"\nResult {index}\n"
-                f"Title: {result['title']}\n"
-                f"URL: {result['url']}\n"
-                f"Content: {result['body']}\n"
-            )
-
-        logger.info("Generating research report...")
-
-        prompt = build_research_prompt(
-            query=query,
-            context=context,
-        )
-
-        response = await self.llm.generate_response(
-            prompt=prompt,
-        )
-
-        # Append sources
-        sources = "\n\n---\n\n## Sources\n\n"
-
-        for index, result in enumerate(search_results, start=1):
-            sources += (
-                f"{index}. {result['title']}\n"
-                f"{result['url']}\n\n"
-            )
-
-        final_report = response + sources
-
-        # Export Markdown
-        markdown_path = self.exporter.export(
-            title=query,
-            report=final_report,
-        )
-
-        # Export PDF
-        pdf_path = self.pdf_exporter.export(
-            title=query,
-            report=final_report,
-        )
-
-        # Save to database
         db = SessionLocal()
 
+        history = create_research_history(
+            db=db,
+            query=query,
+            status="PENDING",
+        )
+
         try:
-            create_research_history(
+            update_research_status(
                 db=db,
+                history=history,
+                status="RUNNING",
+            )
+
+            # Search the web
+            search_results = self.search.search(
                 query=query,
+                max_results=5,
+            )
+
+            # Build search context
+            context = ""
+
+            for index, result in enumerate(search_results, start=1):
+                context += (
+                    f"\nResult {index}\n"
+                    f"Title: {result['title']}\n"
+                    f"URL: {result['url']}\n"
+                    f"Content: {result['body']}\n"
+                )
+
+            logger.info("Generating research report...")
+
+            prompt = build_research_prompt(
+                query=query,
+                context=context,
+            )
+
+            response = await self.llm.generate_response(
+                prompt=prompt,
+            )
+
+            # Append sources
+            sources = "\n\n---\n\n## Sources\n\n"
+
+            for index, result in enumerate(search_results, start=1):
+                sources += (
+                    f"{index}. {result['title']}\n"
+                    f"{result['url']}\n\n"
+                )
+
+            final_report = response + sources
+
+            # Export Markdown
+            markdown_path = self.exporter.export(
+                title=query,
+                report=final_report,
+            )
+
+            # Export PDF
+            pdf_path = self.pdf_exporter.export(
+                title=query,
+                report=final_report,
+            )
+
+            update_research_status(
+                db=db,
+                history=history,
+                status="COMPLETED",
                 report=final_report,
                 markdown_path=markdown_path,
                 pdf_path=pdf_path,
             )
+
+            logger.info("Research completed.")
+
+            return final_report
+
+        except Exception:
+            update_research_status(
+                db=db,
+                history=history,
+                status="FAILED",
+            )
+
+            logger.exception("Research failed.")
+            raise
+
         finally:
             db.close()
-
-        logger.info("Research completed.")
-
-        return final_report

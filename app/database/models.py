@@ -41,8 +41,14 @@ class ResearchHistory(Base):
         String,
         nullable=True,
     )
+    status = Column(
+    String,
+    default="PENDING",
+    nullable=False,
+    )
 
     created_at = Column(
         DateTime,
         default=datetime.utcnow,
     )
+   

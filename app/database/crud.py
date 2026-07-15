@@ -6,7 +6,8 @@ from app.database.models import ResearchHistory
 def create_research_history(
     db: Session,
     query: str,
-    report: str,
+    report: str = "",
+    status: str = "PENDING",
     markdown_path: str | None = None,
     pdf_path: str | None = None,
 ) -> ResearchHistory:
@@ -15,11 +16,12 @@ def create_research_history(
     """
 
     history = ResearchHistory(
-        query=query,
-        report=report,
-        markdown_path=markdown_path,
-        pdf_path=pdf_path,
-    )
+    query=query,
+    report=report,
+    status=status,
+    markdown_path=markdown_path,
+    pdf_path=pdf_path,
+)
 
     db.add(history)
     db.commit()
@@ -99,3 +101,31 @@ def delete_research_history(
 
     db.delete(history)
     db.commit()
+
+def update_research_status(
+    db: Session,
+    history: ResearchHistory,
+    status: str,
+    report: str | None = None,
+    markdown_path: str | None = None,
+    pdf_path: str | None = None,
+) -> ResearchHistory:
+    """
+    Update research status and optional outputs.
+    """
+
+    history.status = status
+
+    if report is not None:
+        history.report = report
+
+    if markdown_path is not None:
+        history.markdown_path = markdown_path
+
+    if pdf_path is not None:
+        history.pdf_path = pdf_path
+
+    db.commit()
+    db.refresh(history)
+
+    return history
