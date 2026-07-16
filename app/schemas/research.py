@@ -1,6 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+)
 
 
 # -----------------------------
@@ -46,16 +51,16 @@ class ResearchResponse(BaseModel):
 # Research History Item
 # -----------------------------
 class ResearchHistoryItem(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
     id: int
     query: str
     status: str
     markdown_path: str | None = None
     pdf_path: str | None = None
     created_at: datetime
-
-
-    class Config:
-        from_attributes = True
 
 
 # -----------------------------

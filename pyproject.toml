@@ -1,7 +1,7 @@
 [project]
 name = "single-agent-ai-research-assistant"
-version = "0.1.0"
-description = "A production-grade Single-Agent AI Research Assistant built with FastAPI, LangGraph, and modern AI engineering practices."
+version = "0.2.0"
+description = "A production-grade Single-Agent AI Research Assistant built with FastAPI and modern AI engineering practices."
 readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
@@ -13,7 +13,6 @@ authors = [
 keywords = [
     "ai",
     "agentic-ai",
-    "langgraph",
     "fastapi",
     "llm",
     "research-assistant",
@@ -24,7 +23,7 @@ keywords = [
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
-   ]
+]
 
 dependencies = [
     "fastapi>=0.116.0",
@@ -45,12 +44,17 @@ dependencies = [
 
     "duckduckgo-search>=8.0.0",
 ]
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.14.0",
+    "pytest-cov>=6.0.0",
     "ruff>=0.12.0",
     "pre-commit>=4.2.0",
 ]
+
 
 [build-system]
 requires = ["setuptools>=80"]
@@ -68,8 +72,10 @@ select = [
     "E",
     "F",
     "I",
+    "UP",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+asyncio_mode = "auto"

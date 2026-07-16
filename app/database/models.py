@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,UTC
 
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -49,6 +49,6 @@ class ResearchHistory(Base):
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow,
+        default=lambda: datetime.now(UTC)
     )
    
