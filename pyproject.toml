@@ -43,6 +43,10 @@ dependencies = [
     "openai>=1.99.0",
 
     "duckduckgo-search>=8.0.0",
+
+    "langgraph>=0.6.0",
+    "langchain-core>=0.3.0",
+
 ]
 
 [project.optional-dependencies]
@@ -79,3 +83,6 @@ select = [
 pythonpath = ["."]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+
+
+    
