@@ -70,10 +70,20 @@ class ResearchService:
                     "attempts": 0,
                     "request_id": request_id,
                     "use_memory": False,
+                    "clarification": "",
+                    "needs_input": False,
                 }
             )
 
             final_report = result["report"]
+
+            if result.get("needs_input"):
+                update_research_status(
+                    db=db,
+                    history=history,
+                    status="NEEDS_INPUT",
+                )
+                return result["clarification"]
 
             logger.info(
                 "[{}] Exporting Markdown...",

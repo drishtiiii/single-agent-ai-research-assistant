@@ -4,8 +4,10 @@ from langgraph.graph import (
     StateGraph,
 )
 
+from app.graph.clarification_router import clarification_router
 from app.graph.memory_router import memory_router
 from app.graph.nodes import (
+    clarification_node,
     database_node,
     evaluate_report_node,
     generate_report_node,
@@ -16,9 +18,6 @@ from app.graph.nodes import (
 )
 from app.graph.planner_router import (
     planner_router,
-)
-from app.graph.router import (
-    evaluation_router,
 )
 from app.graph.state import ResearchState
 
@@ -62,6 +61,10 @@ builder.add_node(
     "memory",
     memory_node,
 )
+builder.add_node(
+    "clarification",
+    clarification_node,
+)
 
 
 # -----------------------------
@@ -102,9 +105,9 @@ builder.add_edge(
 
 builder.add_conditional_edges(
     "evaluate",
-    evaluation_router,
+    clarification_router,
     {
-        "accept": END,
+        "clarification": "clarification",
         "improve": "improve",
     },
 )
@@ -117,5 +120,8 @@ builder.add_edge(
     "database",
     "generate",
 )
-
+builder.add_edge(
+    "clarification",
+    END,
+)
 research_graph = builder.compile()

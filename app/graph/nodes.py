@@ -15,6 +15,7 @@ from app.tools.search import SearchTool
 search_tool = SearchTool()
 llm = LLMService()
 
+
 async def memory_node(
     state: ResearchState,
 ):
@@ -57,6 +58,7 @@ async def memory_node(
 
     finally:
         db.close()
+
 
 async def planner_node(
     state: ResearchState,
@@ -261,9 +263,32 @@ async def evaluate_report_node(
         timer.elapsed(),
     )
 
+    needs_input = score < 7
     return {
         "score": score,
         "feedback": feedback,
+        "needs_input": needs_input,
+    }
+
+
+async def clarification_node(
+    state: ResearchState,
+):
+    """
+    Ask the user for clarification.
+    """
+
+    logger.info(
+        "[{}] Clarification required.",
+        state["request_id"],
+    )
+
+    return {
+        "clarification": (
+            "The research request is too broad or the "
+            "generated report quality is insufficient. "
+            "Please provide more specific details."
+        ),
     }
 
 

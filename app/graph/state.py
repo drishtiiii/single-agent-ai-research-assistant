@@ -19,3 +19,7 @@ class ResearchState(TypedDict):
     request_id: str
 
     use_memory: bool
+
+    clarification: str
+
+    needs_input: bool

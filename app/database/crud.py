@@ -122,6 +122,7 @@ def update_research_status(
 
     return history
 
+
 def find_previous_research(
     db,
     query: str,
