@@ -29,10 +29,7 @@ class PDFExporter:
         )
 
         safe_title = (
-            title.lower()
-            .replace(" ", "_")
-            .replace("/", "_")
-            .replace("\\", "_")
+            title.lower().replace(" ", "_").replace("/", "_").replace("\\", "_")
         )
 
         filename = f"{safe_title}.pdf"
@@ -45,18 +42,12 @@ class PDFExporter:
 
         story = []
 
-        story.append(
-            Paragraph(f"<b>{title}</b>", styles["Title"])
-        )
+        story.append(Paragraph(f"<b>{title}</b>", styles["Title"]))
 
-        story.append(
-            Paragraph(report.replace("\n", "<br/>"), styles["BodyText"])
-        )
+        story.append(Paragraph(report.replace("\n", "<br/>"), styles["BodyText"]))
 
         doc.build(story)
 
-        logger.info(
-            f"PDF report exported to {filepath}"
-        )
+        logger.info(f"PDF report exported to {filepath}")
 
         return str(filepath)

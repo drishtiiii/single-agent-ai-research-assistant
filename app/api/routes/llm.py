@@ -13,9 +13,7 @@ async def test_llm(request: LLMRequest):
     try:
         service = LLMService()
 
-        response = await service.generate_response(
-            prompt=request.prompt
-        )
+        response = await service.generate_response(prompt=request.prompt)
 
         return LLMResponse(
             success=True,

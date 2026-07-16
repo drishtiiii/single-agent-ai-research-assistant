@@ -4,7 +4,6 @@ from fastapi import FastAPI
 
 from app.core.config import settings
 from app.core.logger import logger
-from app.database import models
 from app.database.database import Base, engine
 
 

@@ -14,9 +14,7 @@ def register_exception_handlers(
     Register global exception handlers.
     """
 
-    @app.exception_handler(
-        ResearchNotFoundError
-    )
+    @app.exception_handler(ResearchNotFoundError)
     async def research_not_found_handler(
         request: Request,
         exc: ResearchNotFoundError,

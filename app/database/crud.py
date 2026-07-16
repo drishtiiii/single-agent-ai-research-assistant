@@ -16,12 +16,12 @@ def create_research_history(
     """
 
     history = ResearchHistory(
-    query=query,
-    report=report,
-    status=status,
-    markdown_path=markdown_path,
-    pdf_path=pdf_path,
-)
+        query=query,
+        report=report,
+        status=status,
+        markdown_path=markdown_path,
+        pdf_path=pdf_path,
+    )
 
     db.add(history)
     db.commit()
@@ -64,12 +64,8 @@ def search_research_history(
 
     return (
         db.query(ResearchHistory)
-        .filter(
-            ResearchHistory.query.ilike(f"%{query}%")
-        )
-        .order_by(
-            ResearchHistory.created_at.desc()
-        )
+        .filter(ResearchHistory.query.ilike(f"%{query}%"))
+        .order_by(ResearchHistory.created_at.desc())
         .all()
     )
 
@@ -82,13 +78,7 @@ def get_research_history_by_id(
     Retrieve a report by ID.
     """
 
-    return (
-        db.query(ResearchHistory)
-        .filter(
-            ResearchHistory.id == history_id
-        )
-        .first()
-    )
+    return db.query(ResearchHistory).filter(ResearchHistory.id == history_id).first()
 
 
 def delete_research_history(
@@ -101,6 +91,7 @@ def delete_research_history(
 
     db.delete(history)
     db.commit()
+
 
 def update_research_status(
     db: Session,

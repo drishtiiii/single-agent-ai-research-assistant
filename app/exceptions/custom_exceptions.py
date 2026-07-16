@@ -10,9 +10,7 @@ class ResearchNotFoundError(Exception):
     ):
         self.history_id = history_id
 
-        super().__init__(
-            f"Research report {history_id} not found."
-        )
+        super().__init__(f"Research report {history_id} not found.")
 
 
 class ResearchGenerationError(Exception):

@@ -50,8 +50,12 @@ class ResearchService:
             result = await research_graph.ainvoke(
                 {
                     "query": query,
+                    "tool": "",
                     "context": "",
                     "report": "",
+                    "score": 0,
+                    "feedback": "",
+                    "attempts": 0,
                 }
             )
 

@@ -13,7 +13,6 @@ class Settings(BaseSettings):
     # ==========================
     LOG_LEVEL: str = "INFO"
 
-    
     # ==========================
     # LLM Configuration
     # # ==========================
@@ -23,7 +22,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     LLM_TEMPERATURE: float = 0.2
     LLM_MAX_TOKENS: int = 2000
-    
+
     # ==========================
     # Runtime
     # ==========================

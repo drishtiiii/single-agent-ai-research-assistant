@@ -17,9 +17,7 @@ class GroqProvider(BaseLLM):
 
         self.model = settings.LLM_MODEL
 
-        logger.info(
-            f"Initialized Groq provider with model: {self.model}"
-        )
+        logger.info(f"Initialized Groq provider with model: {self.model}")
 
     async def generate(
         self,
@@ -48,7 +46,7 @@ class GroqProvider(BaseLLM):
             model=self.model,
             messages=messages,
             temperature=settings.LLM_TEMPERATURE,
-           max_tokens=settings.LLM_MAX_TOKENS,
+            max_tokens=settings.LLM_MAX_TOKENS,
         )
 
         return response.choices[0].message.content

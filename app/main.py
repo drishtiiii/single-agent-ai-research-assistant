@@ -8,7 +8,10 @@ from app.exceptions.handlers import register_exception_handlers
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
-    description="A production-grade Single-Agent AI Research Assistant built with FastAPI and Groq.",
+    description=(
+        "A production-grade Single-Agent AI Research Assistant"
+        "built with FastAPI and Groq."
+    ),
     lifespan=lifespan,
 )
 register_exception_handlers(app)

@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.core.config import settings
 from app.core.logger import logger
-from app.schemas.response import RootResponse, HealthResponse
+from app.schemas.response import HealthResponse, RootResponse
 
 router = APIRouter()
 

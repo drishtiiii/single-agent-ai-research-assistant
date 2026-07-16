@@ -8,9 +8,7 @@ async def run_research(query: str):
     a research report.
     """
 
-    logger.info(
-        f"Background research started: {query}"
-    )
+    logger.info(f"Background research started: {query}")
 
     service = ResearchService()
 
@@ -18,6 +16,4 @@ async def run_research(query: str):
         query=query,
     )
 
-    logger.info(
-        f"Background research completed: {query}"
-    )
+    logger.info(f"Background research completed: {query}")

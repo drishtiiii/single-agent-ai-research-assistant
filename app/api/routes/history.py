@@ -22,6 +22,7 @@ from app.schemas.research import (
 
 router = APIRouter()
 
+
 @router.get(
     "/history",
     response_model=ResearchHistoryResponse,
@@ -35,6 +36,7 @@ async def research_history(
         success=True,
         history=history,
     )
+
 
 @router.get(
     "/history/search",
@@ -53,6 +55,8 @@ async def search_history(
         success=True,
         history=history,
     )
+
+
 @router.get(
     "/history/{history_id}",
     response_model=ResearchDetailResponse,
@@ -75,6 +79,8 @@ async def get_history_by_id(
         success=True,
         history=history,
     )
+
+
 @router.delete(
     "/history/{history_id}",
     response_model=DeleteResearchResponse,
@@ -110,9 +116,7 @@ async def delete_history(
         history=history,
     )
 
-    logger.info(
-        f"Research report {history_id} deleted."
-    )
+    logger.info(f"Research report {history_id} deleted.")
 
     return DeleteResearchResponse(
         success=True,

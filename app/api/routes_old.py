@@ -52,9 +52,7 @@ async def test_llm(request: LLMRequest):
     try:
         service = LLMService()
 
-        response = await service.generate_response(
-            prompt=request.prompt
-        )
+        response = await service.generate_response(prompt=request.prompt)
 
         return LLMResponse(
             success=True,
@@ -237,9 +235,7 @@ async def delete_history(
             history=history,
         )
 
-        logger.info(
-            f"Research report {history_id} deleted."
-        )
+        logger.info(f"Research report {history_id} deleted.")
 
         return DeleteResearchResponse(
             success=True,

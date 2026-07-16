@@ -1,10 +1,10 @@
 from fastapi import APIRouter, BackgroundTasks
-from app.tasks.research_tasks import run_research
+
 from app.schemas.research import (
     ResearchRequest,
     ResearchResponse,
 )
-from app.services.research_service import ResearchService
+from app.tasks.research_tasks import run_research
 
 router = APIRouter()
 
@@ -26,7 +26,6 @@ async def research(
     return ResearchResponse(
         success=True,
         report=(
-            "Research has started in the background. "
-            "Please check your history shortly."
+            "Research has started in the background. Please check your history shortly."
         ),
     )

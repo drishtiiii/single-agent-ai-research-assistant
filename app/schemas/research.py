@@ -32,9 +32,7 @@ class ResearchRequest(BaseModel):
         value = value.strip()
 
         if not value:
-            raise ValueError(
-                "Query cannot be empty."
-            )
+            raise ValueError("Query cannot be empty.")
 
         return value
 
@@ -51,9 +49,7 @@ class ResearchResponse(BaseModel):
 # Research History Item
 # -----------------------------
 class ResearchHistoryItem(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True
-    )
+    model_config = ConfigDict(from_attributes=True)
 
     id: int
     query: str

@@ -1,5 +1,6 @@
-from loguru import logger
 import sys
+
+from loguru import logger
 
 # Remove the default logger configuration
 logger.remove()

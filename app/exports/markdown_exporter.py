@@ -26,28 +26,20 @@ class MarkdownExporter:
         )
 
         safe_title = (
-            title.lower()
-            .replace(" ", "_")
-            .replace("/", "_")
-            .replace("\\", "_")
+            title.lower().replace(" ", "_").replace("/", "_").replace("\\", "_")
         )
 
         filename = f"{safe_title}.md"
 
         filepath = Path(output_dir) / filename
 
-        markdown = (
-            f"# {title}\n\n"
-            f"{report}\n"
-        )
+        markdown = f"# {title}\n\n{report}\n"
 
         filepath.write_text(
             markdown,
             encoding="utf-8",
         )
 
-        logger.info(
-            f"Markdown report exported to {filepath}"
-        )
+        logger.info(f"Markdown report exported to {filepath}")
 
         return str(filepath)

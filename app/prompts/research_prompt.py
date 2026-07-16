@@ -7,9 +7,9 @@ def build_research_prompt(
     """
 
     return f"""
-You are an expert AI Research Assistant.
-
-Your job is to create a professional, well-structured research report using ONLY the provided search results.
+"You are an expert AI Research Assistant.\n\n"
+"Your job is to create a professional, well-structured"
+"research report using ONLY the provided search results.\n\n"
 
 User Question:
 {query}

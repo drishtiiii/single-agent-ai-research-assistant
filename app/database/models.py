@@ -1,10 +1,6 @@
-from datetime import datetime,UTC
+from datetime import UTC, datetime
 
-from sqlalchemy import Column
-from sqlalchemy import DateTime
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Text
+from sqlalchemy import Column, DateTime, Integer, String, Text
 
 from app.database.database import Base
 
@@ -42,13 +38,9 @@ class ResearchHistory(Base):
         nullable=True,
     )
     status = Column(
-    String,
-    default="PENDING",
-    nullable=False,
+        String,
+        default="PENDING",
+        nullable=False,
     )
 
-    created_at = Column(
-        DateTime,
-        default=lambda: datetime.now(UTC)
-    )
-   
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))

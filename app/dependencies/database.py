@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.database.database import SessionLocal
 
 
-def get_db() -> Generator[Session, None, None]:
+def get_db() -> Generator[Session]:
     """
     FastAPI dependency that provides
     a database session.

@@ -1,10 +1,9 @@
 from fastapi import APIRouter
 
 from .health import router as health_router
-from .llm import router as llm_router
-
-from .research import router as research_router
 from .history import router as history_router
+from .llm import router as llm_router
+from .research import router as research_router
 
 router = APIRouter()
 
