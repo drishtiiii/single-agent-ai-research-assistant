@@ -4,10 +4,13 @@ from langgraph.graph import (
     StateGraph,
 )
 
+from app.graph.memory_router import memory_router
 from app.graph.nodes import (
+    database_node,
     evaluate_report_node,
     generate_report_node,
     improve_report_node,
+    memory_node,
     planner_node,
     search_node,
 )
@@ -51,12 +54,31 @@ builder.add_node(
     improve_report_node,
 )
 
+builder.add_node(
+    "database",
+    database_node,
+)
+builder.add_node(
+    "memory",
+    memory_node,
+)
+
+
 # -----------------------------
 # Flow
 # -----------------------------
 builder.add_edge(
     START,
-    "planner",
+    "memory",
+)
+
+builder.add_conditional_edges(
+    "memory",
+    memory_router,
+    {
+        "planner": "planner",
+        "generate": "generate",
+    },
 )
 
 builder.add_conditional_edges(
@@ -64,8 +86,7 @@ builder.add_conditional_edges(
     planner_router,
     {
         "search": "search",
-        "database": "generate",
-        "calculator": "generate",
+        "database": "database",
     },
 )
 
@@ -91,6 +112,10 @@ builder.add_conditional_edges(
 builder.add_edge(
     "improve",
     "evaluate",
+)
+builder.add_edge(
+    "database",
+    "generate",
 )
 
 research_graph = builder.compile()

@@ -15,3 +15,7 @@ class ResearchState(TypedDict):
     feedback: str
 
     attempts: int
+
+    request_id: str
+
+    use_memory: bool

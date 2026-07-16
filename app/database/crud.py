@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database.models import ResearchHistory
@@ -120,3 +121,25 @@ def update_research_status(
     db.refresh(history)
 
     return history
+
+def find_previous_research(
+    db,
+    query: str,
+):
+    """
+    Return the most recent completed research
+    matching the supplied query.
+    """
+
+    statement = (
+        select(ResearchHistory)
+        .where(
+            ResearchHistory.query.ilike(f"%{query}%"),
+            ResearchHistory.status == "COMPLETED",
+        )
+        .order_by(
+            ResearchHistory.created_at.desc(),
+        )
+    )
+
+    return db.execute(statement).scalars().first()

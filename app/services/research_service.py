@@ -1,4 +1,6 @@
 from app.core.logger import logger
+from app.core.request_id import generate_request_id
+from app.core.timer import Timer
 from app.database.crud import (
     create_research_history,
     update_research_status,
@@ -25,10 +27,17 @@ class ResearchService:
         query: str,
     ) -> str:
         """
-        Perform web research and generate a comprehensive answer.
+        Perform AI-powered research using the LangGraph workflow.
         """
 
-        logger.info(f"Research started for: {query}")
+        request_id = generate_request_id()
+        timer = Timer()
+
+        logger.info(
+            "[{}] Research started: {}",
+            request_id,
+            query,
+        )
 
         db = SessionLocal()
 
@@ -45,7 +54,10 @@ class ResearchService:
                 status="RUNNING",
             )
 
-            logger.info("Running LangGraph workflow...")
+            logger.info(
+                "[{}] Running LangGraph workflow...",
+                request_id,
+            )
 
             result = await research_graph.ainvoke(
                 {
@@ -56,18 +68,28 @@ class ResearchService:
                     "score": 0,
                     "feedback": "",
                     "attempts": 0,
+                    "request_id": request_id,
+                    "use_memory": False,
                 }
             )
 
             final_report = result["report"]
 
-            # Export Markdown
+            logger.info(
+                "[{}] Exporting Markdown...",
+                request_id,
+            )
+
             markdown_path = self.exporter.export(
                 title=query,
                 report=final_report,
             )
 
-            # Export PDF
+            logger.info(
+                "[{}] Exporting PDF...",
+                request_id,
+            )
+
             pdf_path = self.pdf_exporter.export(
                 title=query,
                 report=final_report,
@@ -82,7 +104,11 @@ class ResearchService:
                 pdf_path=pdf_path,
             )
 
-            logger.info("Research completed.")
+            logger.info(
+                "[{}] Research completed successfully in {:.3f} sec",
+                request_id,
+                timer.elapsed(),
+            )
 
             return final_report
 
@@ -93,7 +119,12 @@ class ResearchService:
                 status="FAILED",
             )
 
-            logger.exception("Research failed.")
+            logger.exception(
+                "[{}] Research failed after {:.3f} sec",
+                request_id,
+                timer.elapsed(),
+            )
+
             raise
 
         finally:
