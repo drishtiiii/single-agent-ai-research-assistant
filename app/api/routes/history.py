@@ -19,6 +19,8 @@ from app.schemas.research import (
     ResearchDetailResponse,
     ResearchHistoryResponse,
 )
+from fastapi.responses import FileResponse
+
 
 router = APIRouter()
 
@@ -121,4 +123,48 @@ async def delete_history(
     return DeleteResearchResponse(
         success=True,
         message="Research report deleted successfully.",
+    )
+
+@router.get("/history/{history_id}/download/markdown")
+async def download_markdown(
+    history_id: int,
+    db: Session = Depends(get_db),
+):
+    history = get_research_history_by_id(
+        db=db,
+        history_id=history_id,
+    )
+
+    if history is None:
+        raise ResearchNotFoundError(history_id)
+
+    if not history.markdown_path:
+        raise FileNotFoundError("Markdown file not found.")
+
+    return FileResponse(
+        path=history.markdown_path,
+        filename=Path(history.markdown_path).name,
+        media_type="text/markdown",
+    )
+
+@router.get("/history/{history_id}/download/pdf")
+async def download_pdf(
+    history_id: int,
+    db: Session = Depends(get_db),
+):
+    history = get_research_history_by_id(
+        db=db,
+        history_id=history_id,
+    )
+
+    if history is None:
+        raise ResearchNotFoundError(history_id)
+
+    if not history.pdf_path:
+        raise FileNotFoundError("PDF file not found.")
+
+    return FileResponse(
+        path=history.pdf_path,
+        filename=Path(history.pdf_path).name,
+        media_type="application/pdf",
     )

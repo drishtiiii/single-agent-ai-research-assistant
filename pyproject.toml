@@ -51,6 +51,10 @@ dependencies = [
     "reportlab>=4.2.0",
     "markdown>=3.8",
 
+    "streamlit>=1.48.0",
+    "requests>=2.32.0",
+    "wikipedia>=1.4.0",
+
 ]
 
 [project.optional-dependencies]

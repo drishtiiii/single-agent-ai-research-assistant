@@ -42,6 +42,7 @@ class ResearchRequest(BaseModel):
 # -----------------------------
 class ResearchResponse(BaseModel):
     success: bool
+    job_id: int
     report: str
 
 
@@ -53,6 +54,7 @@ class ResearchHistoryItem(BaseModel):
 
     id: int
     query: str
+    report: str
     status: str
     markdown_path: str | None = None
     pdf_path: str | None = None

@@ -11,10 +11,12 @@ from app.prompts.research_prompt import build_research_prompt
 from app.prompts.rewrite_prompt import build_rewrite_prompt
 from app.services.llm_service import LLMService
 from app.tools.search import SearchTool
+from app.tools.wikipedia import WikipediaTool
+
 
 search_tool = SearchTool()
 llm = LLMService()
-
+wikipedia_tool = WikipediaTool()
 
 async def memory_node(
     state: ResearchState,
@@ -110,7 +112,7 @@ def search_node(
     state: ResearchState,
 ):
     """
-    Search the web for relevant information.
+    Search DuckDuckGo and Wikipedia for relevant information.
     """
 
     timer = Timer()
@@ -121,20 +123,44 @@ def search_node(
         request_id,
     )
 
+    # -----------------------
+    # DuckDuckGo Search
+    # -----------------------
+
     results = search_tool.search(
         query=state["query"],
         max_results=5,
     )
 
-    context = ""
+    context = "# DuckDuckGo Results\n\n"
 
     for index, result in enumerate(results, start=1):
+
         context += (
             f"\nResult {index}\n"
             f"Title: {result['title']}\n"
             f"URL: {result['url']}\n"
             f"Content: {result['body']}\n"
         )
+
+    # -----------------------
+    # Wikipedia Search
+    # -----------------------
+
+    wiki_context = wikipedia_tool.search(
+        state["query"]
+    )
+
+    if wiki_context:
+
+        context += (
+            "\n\n"
+            "=====================================\n"
+            "Wikipedia\n"
+            "=====================================\n\n"
+        )
+
+        context += wiki_context
 
     logger.info(
         "[{}] Search node completed in {:.3f} sec.",
@@ -145,7 +171,6 @@ def search_node(
     return {
         "context": context,
     }
-
 
 async def database_node(
     state: ResearchState,

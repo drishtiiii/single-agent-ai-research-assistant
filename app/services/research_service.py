@@ -2,7 +2,7 @@ from app.core.logger import logger
 from app.core.request_id import generate_request_id
 from app.core.timer import Timer
 from app.database.crud import (
-    create_research_history,
+    get_research_history_by_id,
     update_research_status,
 )
 from app.database.database import SessionLocal
@@ -24,6 +24,7 @@ class ResearchService:
 
     async def research(
         self,
+        history_id: int,
         query: str,
     ) -> str:
         """
@@ -41,11 +42,14 @@ class ResearchService:
 
         db = SessionLocal()
 
-        history = create_research_history(
+        history = get_research_history_by_id(
             db=db,
-            query=query,
-            status="PENDING",
+            history_id=history_id,
         )
+        if history is None:
+            raise ValueError(
+                f"Research history {history_id} not found."
+                )
 
         try:
             update_research_status(
@@ -75,16 +79,34 @@ class ResearchService:
                 }
             )
 
-            final_report = result["report"]
-
+            # -----------------------------
+            # # DEBUG OUTPUT
+            # # -----------------------------
+            logger.info("========== GRAPH RESULT ==========")
+            logger.info(result)
+            print("\n========== GRAPH RESULT ==========")
+            print(result)
+            print("needs_input :", result.get("needs_input"))
+            print("clarification :", result.get("clarification"))
+            print("report length :", len(result.get("report", "")))
+            print("=================================\n")
+            final_report = result.get("report", "")
             if result.get("needs_input"):
-                update_research_status(
-                    db=db,
-                    history=history,
-                    status="NEEDS_INPUT",
+                 logger.warning(
+                      "[{}] Graph requested clarification: {}",
+                      request_id,
+                      result.get("clarification"),
                 )
-                return result["clarification"]
-
+                 update_research_status(
+                      db=db,
+                      history=history,
+                      status="NEEDS_INPUT",
+                      )
+                 return result.get("clarification", "More information is required.")
+            
+            if not final_report.strip():
+                raise ValueError("LangGraph returned an empty report.")
+            
             logger.info(
                 "[{}] Exporting Markdown...",
                 request_id,
