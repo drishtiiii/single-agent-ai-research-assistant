@@ -109,6 +109,7 @@ builder.add_conditional_edges(
     {
         "clarification": "clarification",
         "improve": "improve",
+        "approved": END,
     },
 )
 
