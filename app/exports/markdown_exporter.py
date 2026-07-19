@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from app.core.logger import logger
@@ -20,14 +21,40 @@ class MarkdownExporter:
         Returns the path of the generated file.
         """
 
+        # Create reports directory if it doesn't exist
         Path(output_dir).mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        safe_title = (
-            title.lower().replace(" ", "_").replace("/", "_").replace("\\", "_")
+        # -------------------------
+        # Create a safe filename
+        # -------------------------
+        safe_title = title.strip().lower()
+
+        # Remove characters invalid on Windows/macOS/Linux
+        safe_title = re.sub(
+            r'[\\/*?:"<>|]',
+            "",
+            safe_title,
         )
+
+        # Replace spaces with underscores
+        safe_title = safe_title.replace(" ", "_")
+
+        # Remove duplicate underscores
+        safe_title = re.sub(
+            r"_+",
+            "_",
+            safe_title,
+        )
+
+        # Remove leading/trailing underscores
+        safe_title = safe_title.strip("_")
+
+        # Fallback filename
+        if not safe_title:
+            safe_title = "research_report"
 
         filename = f"{safe_title}.md"
 
@@ -40,6 +67,9 @@ class MarkdownExporter:
             encoding="utf-8",
         )
 
-        logger.info(f"Markdown report exported to {filepath}")
+        logger.info(
+            "Markdown report exported to {}",
+            filepath,
+        )
 
         return str(filepath)

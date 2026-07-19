@@ -256,6 +256,10 @@ async def evaluate_report_node(
         prompt=prompt,
     )
 
+    print("\n========== EVALUATION ==========")
+    print(evaluation)
+    print("================================\n")
+
     score = 5
     feedback = evaluation
 
@@ -288,7 +292,7 @@ async def evaluate_report_node(
         timer.elapsed(),
     )
 
-    needs_input = score < 7
+    needs_input = score < 6
     return {
         "score": score,
         "feedback": feedback,

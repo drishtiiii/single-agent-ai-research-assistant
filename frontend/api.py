@@ -39,9 +39,20 @@ def delete_report(history_id: int):
     response.raise_for_status()
     return response.json()
 
-def get_markdown_download_url(history_id: int):
-    return f"{API_URL}/history/{history_id}/download/markdown"
+
+def get_markdown_file(history_id: int):
+    response = requests.get(
+        f"{API_URL}/history/{history_id}/download/markdown",
+        timeout=60,
+    )
+    response.raise_for_status()
+    return response.content
 
 
-def get_pdf_download_url(history_id: int):
-    return f"{API_URL}/history/{history_id}/download/pdf"
+def get_pdf_file(history_id: int):
+    response = requests.get(
+        f"{API_URL}/history/{history_id}/download/pdf",
+        timeout=60,
+    )
+    response.raise_for_status()
+    return response.content

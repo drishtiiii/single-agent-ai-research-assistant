@@ -3,8 +3,8 @@ import streamlit as st
 from api import (
     delete_report,
     get_history,
-    get_markdown_download_url,
-    get_pdf_download_url,
+    get_markdown_file,
+    get_pdf_file,
     get_report,
     start_research,
 )
@@ -106,6 +106,10 @@ elif page == "📜 History":
                         f"📅 Created: {item['created_at']}"
                     )
 
+                    st.write(
+                        f"**Status:** {item['status']}"
+                    )
+
                     col1, col2 = st.columns(2)
 
                     # -------------------------
@@ -133,27 +137,43 @@ elif page == "📜 History":
 
                             st.subheader("📥 Downloads")
 
-                            download_col1, download_col2 = st.columns(
-                                2
-                            )
+                            download_col1, download_col2 = st.columns(2)
+
+                            # -------------------------
+                            # Markdown Download
+                            # -------------------------
 
                             with download_col1:
 
-                                st.link_button(
-                                    "📝 Download Markdown",
-                                    get_markdown_download_url(
-                                        item["id"]
-                                    ),
+                                markdown_bytes = get_markdown_file(
+                                    item["id"]
+                                )
+
+                                st.download_button(
+                                    label="📝 Download Markdown",
+                                    data=markdown_bytes,
+                                    file_name=f"{item['query']}.md",
+                                    mime="text/markdown",
+                                    key=f"md_{item['id']}",
                                     use_container_width=True,
                                 )
 
+                            # -------------------------
+                            # PDF Download
+                            # -------------------------
+
                             with download_col2:
 
-                                st.link_button(
-                                    "📄 Download PDF",
-                                    get_pdf_download_url(
-                                        item["id"]
-                                    ),
+                                pdf_bytes = get_pdf_file(
+                                    item["id"]
+                                )
+
+                                st.download_button(
+                                    label="📄 Download PDF",
+                                    data=pdf_bytes,
+                                    file_name=f"{item['query']}.pdf",
+                                    mime="application/pdf",
+                                    key=f"pdf_{item['id']}",
                                     use_container_width=True,
                                 )
 
@@ -166,6 +186,7 @@ elif page == "📜 History":
                         if st.button(
                             "🗑 Delete",
                             key=f"delete_{item['id']}",
+                            use_container_width=True,
                         ):
 
                             delete_report(item["id"])
@@ -190,7 +211,7 @@ else:
 
     st.markdown(
         """
-### Single-Agent AI Research Assistant
+## Single-Agent AI Research Assistant
 
 A production-ready AI research assistant built with:
 
@@ -210,6 +231,7 @@ A production-ready AI research assistant built with:
 
 - AI-powered research generation
 - Background research jobs
+- DuckDuckGo + Wikipedia search
 - Markdown export
 - PDF export
 - Research history

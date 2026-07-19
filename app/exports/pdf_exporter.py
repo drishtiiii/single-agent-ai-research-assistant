@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from reportlab.lib.styles import getSampleStyleSheet
@@ -23,31 +24,65 @@ class PDFExporter:
         Returns the path of the generated file.
         """
 
+        # Create reports directory
         Path(output_dir).mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        safe_title = (
-            title.lower().replace(" ", "_").replace("/", "_").replace("\\", "_")
+        # -------------------------
+        # Create a safe filename
+        # -------------------------
+        safe_title = title.strip().lower()
+
+        # Remove invalid filename characters
+        safe_title = re.sub(
+            r'[\\/*?:"<>|]',
+            "",
+            safe_title,
         )
+
+        # Replace spaces with underscores
+        safe_title = safe_title.replace(" ", "_")
+
+        # Remove duplicate underscores
+        safe_title = re.sub(
+            r"_+",
+            "_",
+            safe_title,
+        )
+
+        # Remove leading/trailing underscores
+        safe_title = safe_title.strip("_")
+
+        # Fallback filename
+        if not safe_title:
+            safe_title = "research_report"
 
         filename = f"{safe_title}.pdf"
 
         filepath = Path(output_dir) / filename
 
+        # -------------------------
+        # Build PDF
+        # -------------------------
         doc = SimpleDocTemplate(str(filepath))
 
         styles = getSampleStyleSheet()
 
-        story = []
-
-        story.append(Paragraph(f"<b>{title}</b>", styles["Title"]))
-
-        story.append(Paragraph(report.replace("\n", "<br/>"), styles["BodyText"]))
+        story = [
+            Paragraph(title, styles["Title"]),
+            Paragraph(
+                report.replace("\n", "<br/>"),
+                styles["BodyText"],
+            ),
+        ]
 
         doc.build(story)
 
-        logger.info(f"PDF report exported to {filepath}")
+        logger.info(
+            "PDF report exported to {}",
+            filepath,
+        )
 
         return str(filepath)

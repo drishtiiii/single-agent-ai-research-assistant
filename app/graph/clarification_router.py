@@ -5,20 +5,33 @@ def clarification_router(
     state: ResearchState,
 ) -> str:
     """
-    Decide what happens after report evaluation.
+    Route the workflow after report evaluation.
+
+    Workflow:
+
+    Score >= 8
+        -> Approved
+
+    Score < 8
+        -> Improve report
+
+    After 2 improvement attempts
+        -> Approve the latest version to avoid infinite loops.
+
+    The clarification node is reserved for future interactive
+    user conversations and is currently not used.
     """
 
-    # User clarification required
-    if state["needs_input"]:
-        return "clarification"
+    score = state.get("score", 0)
+    attempts = state.get("attempts", 0)
 
-    # Report quality is good enough
-    if state["score"] >= 8:
+    # High-quality report
+    if score >= 8:
         return "approved"
 
-    # Prevent infinite improvement loop
-    if state["attempts"] >= 2:
+    # Prevent infinite rewrite loops
+    if attempts >= 2:
         return "approved"
 
-    # Improve report
+    # Continue improving the report
     return "improve"
