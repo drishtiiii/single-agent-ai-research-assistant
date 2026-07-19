@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     # Application
     # ==========================
     APP_NAME: str = "Single Agent AI Research Assistant"
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # ==========================
     # Logging
@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     # ==========================
     REQUEST_TIMEOUT: int = 60
     MAX_RETRIES: int = 3
+
+    PORT: int = 8000
 
     model_config = SettingsConfigDict(
         env_file=".env",

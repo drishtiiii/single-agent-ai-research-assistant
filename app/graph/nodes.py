@@ -129,7 +129,7 @@ def search_node(
 
     results = search_tool.search(
         query=state["query"],
-        max_results=5,
+        max_results=3,
     )
 
     context = "# DuckDuckGo Results\n\n"
