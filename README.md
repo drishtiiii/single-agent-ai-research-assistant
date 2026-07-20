@@ -298,9 +298,13 @@ single-agent-ai-research-assistant/
 
 ## Drishti Saha
 
-M.Sc. in Computer Science with an interest in Artificial Intelligence, Agentic AI systems, FastAPI, and production-ready AI applications.
-
 This project demonstrates the design and deployment of a complete AI research assistant, integrating LLM-powered report generation, workflow orchestration with LangGraph, web search, persistent storage, and cloud deployment.
+
+GitHub:
+https://github.com/drishtiiii
+
+LinkedIn:
+https://www.linkedin.com/in/drishti-saha/
 
 ---
 
