@@ -13,9 +13,9 @@ def mock_background_task():
     calling the real LLM during tests.
     """
     with patch(
-    "app.api.routes.research.run_research",
-    new=AsyncMock(),
-):
+        "app.api.routes.research.run_research",
+        new=AsyncMock(),
+    ):
         yield
 
 

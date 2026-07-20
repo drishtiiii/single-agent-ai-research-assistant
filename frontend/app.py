@@ -1,5 +1,4 @@
 import streamlit as st
-
 from api import (
     delete_report,
     get_history,
@@ -36,12 +35,15 @@ page = st.sidebar.radio(
 # -------------------------
 
 if page == "🏠 Research":
-
     st.title("🤖 Single-Agent AI Research Assistant")
 
     st.markdown(
         """
-Generate AI-powered research reports using **LangGraph**, **Groq**, **DuckDuckGo Search**, and **Wikipedia**.
+Generate AI-powered research reports using: 
+**LangGraph**
+**Groq**
+**DuckDuckGo Search**
+**Wikipedia**.
 """
     )
 
@@ -55,27 +57,19 @@ Generate AI-powered research reports using **LangGraph**, **Groq**, **DuckDuckGo
         "🚀 Generate Report",
         use_container_width=True,
     ):
-
         if not query.strip():
-
             st.warning("Please enter a research topic.")
 
         else:
-
             with st.spinner("Starting research..."):
-
                 try:
-
                     response = start_research(query)
 
                     st.success(response["report"])
 
-                    st.info(
-                        f"Job ID: {response['job_id']} started."
-                    )
+                    st.info(f"Job ID: {response['job_id']} started.")
 
                 except Exception as e:
-
                     st.error(str(e))
 
 # -------------------------
@@ -83,32 +77,20 @@ Generate AI-powered research reports using **LangGraph**, **Groq**, **DuckDuckGo
 # -------------------------
 
 elif page == "📜 History":
-
     st.title("📜 Research History")
 
     try:
-
         history = get_history()["history"]
 
         if not history:
-
             st.info("No research reports available.")
 
         else:
-
             for item in history:
+                with st.expander(f"{item['query']} ({item['status']})"):
+                    st.write(f"📅 Created: {item['created_at']}")
 
-                with st.expander(
-                    f"{item['query']} ({item['status']})"
-                ):
-
-                    st.write(
-                        f"📅 Created: {item['created_at']}"
-                    )
-
-                    st.write(
-                        f"**Status:** {item['status']}"
-                    )
+                    st.write(f"**Status:** {item['status']}")
 
                     col1, col2 = st.columns(2)
 
@@ -117,19 +99,13 @@ elif page == "📜 History":
                     # -------------------------
 
                     with col1:
-
                         if st.button(
                             "📄 View Report",
                             key=f"view_{item['id']}",
                         ):
+                            report = get_report(item["id"])["history"]
 
-                            report = get_report(
-                                item["id"]
-                            )["history"]
-
-                            st.markdown(
-                                "### 📄 Research Report"
-                            )
+                            st.markdown("### 📄 Research Report")
 
                             st.markdown(report["report"])
 
@@ -144,10 +120,7 @@ elif page == "📜 History":
                             # -------------------------
 
                             with download_col1:
-
-                                markdown_bytes = get_markdown_file(
-                                    item["id"]
-                                )
+                                markdown_bytes = get_markdown_file(item["id"])
 
                                 st.download_button(
                                     label="📝 Download Markdown",
@@ -163,10 +136,7 @@ elif page == "📜 History":
                             # -------------------------
 
                             with download_col2:
-
-                                pdf_bytes = get_pdf_file(
-                                    item["id"]
-                                )
+                                pdf_bytes = get_pdf_file(item["id"])
 
                                 st.download_button(
                                     label="📄 Download PDF",
@@ -182,23 +152,18 @@ elif page == "📜 History":
                     # -------------------------
 
                     with col2:
-
                         if st.button(
                             "🗑 Delete",
                             key=f"delete_{item['id']}",
                             use_container_width=True,
                         ):
-
                             delete_report(item["id"])
 
-                            st.success(
-                                "Research report deleted successfully."
-                            )
+                            st.success("Research report deleted successfully.")
 
                             st.rerun()
 
     except Exception as e:
-
         st.error(f"Error loading history: {e}")
 
 # -------------------------
@@ -206,7 +171,6 @@ elif page == "📜 History":
 # -------------------------
 
 else:
-
     st.title("ℹ️ About")
 
     st.markdown(

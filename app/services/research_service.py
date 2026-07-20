@@ -47,9 +47,7 @@ class ResearchService:
             history_id=history_id,
         )
         if history is None:
-            raise ValueError(
-                f"Research history {history_id} not found."
-                )
+            raise ValueError(f"Research history {history_id} not found.")
 
         try:
             update_research_status(
@@ -92,21 +90,21 @@ class ResearchService:
             print("=================================\n")
             final_report = result.get("report", "")
             if result.get("needs_input"):
-                 logger.warning(
-                      "[{}] Graph requested clarification: {}",
-                      request_id,
-                      result.get("clarification"),
+                logger.warning(
+                    "[{}] Graph requested clarification: {}",
+                    request_id,
+                    result.get("clarification"),
                 )
-                 update_research_status(
-                      db=db,
-                      history=history,
-                      status="NEEDS_INPUT",
-                      )
-                 return result.get("clarification", "More information is required.")
-            
+                update_research_status(
+                    db=db,
+                    history=history,
+                    status="NEEDS_INPUT",
+                )
+                return result.get("clarification", "More information is required.")
+
             if not final_report.strip():
                 raise ValueError("LangGraph returned an empty report.")
-            
+
             logger.info(
                 "[{}] Exporting Markdown...",
                 request_id,

@@ -13,10 +13,10 @@ from app.services.llm_service import LLMService
 from app.tools.search import SearchTool
 from app.tools.wikipedia import WikipediaTool
 
-
 search_tool = SearchTool()
 llm = LLMService()
 wikipedia_tool = WikipediaTool()
+
 
 async def memory_node(
     state: ResearchState,
@@ -135,7 +135,6 @@ def search_node(
     context = "# DuckDuckGo Results\n\n"
 
     for index, result in enumerate(results, start=1):
-
         context += (
             f"\nResult {index}\n"
             f"Title: {result['title']}\n"
@@ -147,12 +146,9 @@ def search_node(
     # Wikipedia Search
     # -----------------------
 
-    wiki_context = wikipedia_tool.search(
-        state["query"]
-    )
+    wiki_context = wikipedia_tool.search(state["query"])
 
     if wiki_context:
-
         context += (
             "\n\n"
             "=====================================\n"
@@ -171,6 +167,7 @@ def search_node(
     return {
         "context": context,
     }
+
 
 async def database_node(
     state: ResearchState,

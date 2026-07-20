@@ -14,7 +14,6 @@ class WikipediaTool:
     ) -> str:
 
         try:
-
             wikipedia.set_lang("en")
 
             page = wikipedia.page(
@@ -27,9 +26,7 @@ class WikipediaTool:
                 sentences=5,
             )
 
-            logger.info(
-                f"Wikipedia page found: {page.title}"
-            )
+            logger.info(f"Wikipedia page found: {page.title}")
 
             return f"""
 Title:
@@ -43,9 +40,6 @@ URL:
 """
 
         except Exception as e:
-
-            logger.warning(
-                f"Wikipedia search failed: {e}"
-            )
+            logger.warning(f"Wikipedia search failed: {e}")
 
             return ""

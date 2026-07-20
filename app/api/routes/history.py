@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.core.logger import logger
@@ -19,8 +20,6 @@ from app.schemas.research import (
     ResearchDetailResponse,
     ResearchHistoryResponse,
 )
-from fastapi.responses import FileResponse
-
 
 router = APIRouter()
 
@@ -125,6 +124,7 @@ async def delete_history(
         message="Research report deleted successfully.",
     )
 
+
 @router.get("/history/{history_id}/download/markdown")
 async def download_markdown(
     history_id: int,
@@ -146,6 +146,7 @@ async def download_markdown(
         filename=Path(history.markdown_path).name,
         media_type="text/markdown",
     )
+
 
 @router.get("/history/{history_id}/download/pdf")
 async def download_pdf(
