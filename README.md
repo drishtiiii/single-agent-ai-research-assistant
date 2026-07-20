@@ -137,38 +137,38 @@ The application is designed following modern AI engineering practices including 
                  SQLite Research History
                          │
                          ▼
-             Markdown & PDF Export
+              Markdown & PDF Export
 ```
 
 # 📷 Screenshots
 
 ## Home
 
-![Home](docs/images/home.png)
+![Home](docs/home.png)
 
 ---
 
 ## Generated Report
 
-![Report](docs/images/report.png)
+![Report](docs/report.png)
 
 ---
 
 ## Research History
 
-![History](docs/images/history.png)
+![History](docs/history.png)
 
 ---
 
 ## Swagger API
 
-![Swagger](docs/images/swagger.png)
+![Swagger](docs/swagger.png)
 
 ---
 
 ## Downloads
 
-![Downloads](docs/images/downloads.png)
+![Downloads](docs/downloads.png)
 
 # ⚙️ Installation
 
@@ -232,3 +232,79 @@ http://127.0.0.1:8000/docs
 ```bash
 streamlit run frontend/app.py
 ```
+
+# 🐳 Docker
+
+Build the Docker image
+
+```bash
+docker build -t single-agent-ai-research-assistant .
+```
+
+Run the container
+
+```bash
+docker run -p 8000:8000 single-agent-ai-research-assistant
+```
+
+Or use Docker Compose
+
+```bash
+docker compose up --build
+```
+
+# 📂 Project Structure
+
+```text
+single-agent-ai-research-assistant/
+│
+├── app/                    # FastAPI backend
+│   ├── api/
+│   ├── core/
+│   ├── database/
+│   ├── graph/
+│   ├── prompts/
+│   ├── services/
+│   ├── tools/
+│   ├── exports/
+│   └── main.py
+│
+├── frontend/               # Streamlit frontend
+│
+├── reports/                # Generated Markdown & PDF reports
+│
+├── docs/
+│   └── images/
+│
+├── tests/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml
+└── README.md
+```
+
+# 🌍 Deployment
+
+| Service | URL |
+|---------|-----|
+| 🚀 Live Demo | https://single-agent-ai-research-assistant-2ndvplhb4q76b9drunp5s6.streamlit.app |
+| 📄 Swagger API | https://single-agent-ai-research-assistant.onrender.com/docs |
+| ⚙️ Backend API | https://single-agent-ai-research-assistant.onrender.com |
+
+---
+
+# 👩‍💻 Author
+
+## Drishti Saha
+
+M.Sc. in Computer Science with an interest in Artificial Intelligence, Agentic AI systems, FastAPI, and production-ready AI applications.
+
+This project demonstrates the design and deployment of a complete AI research assistant, integrating LLM-powered report generation, workflow orchestration with LangGraph, web search, persistent storage, and cloud deployment.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+If you found this project interesting, feel free to ⭐ the repository or connect with me on LinkedIn.
