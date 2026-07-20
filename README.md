@@ -39,3 +39,67 @@ It combines modern Agentic AI workflows with a production-ready backend and inte
 The application is designed following modern AI engineering practices including modular architecture, workflow orchestration, Docker support, REST APIs, and cloud deployment.
 
 ---
+
+# ✨ Features
+
+- 🔎 **AI-powered Research Generation**
+  - Generates structured research reports using Groq LLM.
+
+- 🌍 **Multi-source Information Retrieval**
+  - Searches DuckDuckGo.
+  - Retrieves trusted summaries from Wikipedia.
+
+- 🧠 **LangGraph Workflow**
+  - Planner Node
+  - Search Node
+  - Report Generator
+  - Evaluator
+  - Report Improver
+  - Memory Lookup
+
+- 📄 **Professional Reports**
+  - Executive Summary
+  - Key Findings
+  - Detailed Analysis
+  - Conclusion
+
+- 📥 **Export Options**
+  - Markdown (.md)
+  - PDF (.pdf)
+
+- 📚 **Research History**
+  - Stores previous research in SQLite.
+  - View and download previous reports.
+
+- 🌐 **REST API**
+  - Fully documented using Swagger UI.
+
+- 🖥️ **Interactive Frontend**
+  - Built with Streamlit.
+  - One-click report generation.
+
+- 🐳 **Production Ready**
+  - Docker support
+  - Render deployment
+  - Streamlit Cloud deployment
+  - GitHub Actions ready
+
+# 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Python 3.13 |
+| Backend | FastAPI |
+| Frontend | Streamlit |
+| AI Workflow | LangGraph |
+| LLM | Groq (Llama 3.3 70B Versatile) |
+| Search | DuckDuckGo |
+| Knowledge Source | Wikipedia |
+| Database | SQLite + SQLAlchemy |
+| Report Export | Markdown, ReportLab PDF |
+| API Documentation | Swagger UI |
+| Deployment | Render |
+| Frontend Hosting | Streamlit Community Cloud |
+| Containerization | Docker |
+| Version Control | Git & GitHub |
+
