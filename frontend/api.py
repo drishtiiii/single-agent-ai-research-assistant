@@ -7,7 +7,7 @@ def start_research(query: str):
     response = requests.post(
         f"{API_URL}/research",
         json={"query": query},
-        timeout=10,
+        timeout=120,
     )
     response.raise_for_status()
     return response.json()
