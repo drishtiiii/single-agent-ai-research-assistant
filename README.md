@@ -103,3 +103,132 @@ The application is designed following modern AI engineering practices including 
 | Containerization | Docker |
 | Version Control | Git & GitHub |
 
+# 🏗️ System Architecture
+
+```text
+                    ┌─────────────────────────┐
+                    │       Streamlit UI      │
+                    │   (Frontend - Cloud)    │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │      FastAPI API        │
+                    │    (Render Backend)     │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │     LangGraph Agent     │
+                    └────────────┬────────────┘
+                                 │
+          ┌──────────────────────┼──────────────────────┐
+          ▼                      ▼                      ▼
+   Memory Lookup          DuckDuckGo Search       Wikipedia
+          │                      │                      │
+          └──────────────┬───────┴──────────────┬───────┘
+                         ▼                      ▼
+                  Report Generation       Report Evaluation
+                         │
+                         ▼
+                  Report Improvement
+                         │
+                         ▼
+                 SQLite Research History
+                         │
+                         ▼
+             Markdown & PDF Export
+```
+
+# 📷 Screenshots
+
+## Home
+
+![Home](docs/images/home.png)
+
+---
+
+## Generated Report
+
+![Report](docs/images/report.png)
+
+---
+
+## Research History
+
+![History](docs/images/history.png)
+
+---
+
+## Swagger API
+
+![Swagger](docs/images/swagger.png)
+
+---
+
+## Downloads
+
+![Downloads](docs/images/downloads.png)
+
+# ⚙️ Installation
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/single-agent-ai-research-assistant.git
+cd single-agent-ai-research-assistant
+```
+
+## 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it.
+
+Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+## 3. Install dependencies
+
+```bash
+pip install -e .
+```
+
+## 4. Configure environment variables
+
+Create a `.env` file.
+
+```env
+GROQ_API_KEY=your_api_key
+LLM_PROVIDER=groq
+LLM_MODEL=llama-3.3-70b-versatile
+```
+
+## 5. Run FastAPI
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Swagger:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+## 6. Run Streamlit
+
+```bash
+streamlit run frontend/app.py
+```
