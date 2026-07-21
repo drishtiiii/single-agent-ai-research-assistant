@@ -43,4 +43,7 @@ class ResearchHistory(Base):
         nullable=False,
     )
 
+
+    
+
     created_at = Column(DateTime, default=lambda: datetime.now(UTC))

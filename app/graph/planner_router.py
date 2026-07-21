@@ -9,6 +9,7 @@ def planner_router(
 
     if tool == "DATABASE":
         return "database"
+    return "search"
 
     if tool == "CALCULATOR":
         return "calculator"

@@ -7,18 +7,42 @@ from api import (
     get_report,
     start_research,
 )
+from theme import (
+    apply_theme,
+    initialize_theme,
+    toggle_theme,
+)
 
 st.set_page_config(
     page_title="Single-Agent AI Research Assistant",
     page_icon="🤖",
     layout="wide",
 )
+initialize_theme()
+apply_theme()
+
 
 # -------------------------
 # SIDEBAR
 # -------------------------
 
 st.sidebar.title("🤖 Navigation")
+
+st.sidebar.divider()
+
+if st.sidebar.toggle(
+    "🌙 Dark Mode",
+    value=st.session_state.theme == "dark",
+):
+    if st.session_state.theme != "dark":
+        toggle_theme()
+        st.rerun()
+else:
+    if st.session_state.theme != "light":
+        toggle_theme()
+        st.rerun()
+
+st.sidebar.divider()
 
 page = st.sidebar.radio(
     "Navigation",

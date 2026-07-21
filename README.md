@@ -137,7 +137,7 @@ The application is designed following modern AI engineering practices including 
                  SQLite Research History
                          │
                          ▼
-              Markdown & PDF Export
+                 Markdown & PDF Export
 ```
 
 # 📷 Screenshots
