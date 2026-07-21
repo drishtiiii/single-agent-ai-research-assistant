@@ -2,72 +2,163 @@ import streamlit as st
 
 
 def initialize_theme():
-    """Initialize the theme."""
     if "theme" not in st.session_state:
         st.session_state.theme = "light"
 
 
 def toggle_theme():
-    """Toggle theme."""
-    if st.session_state.theme == "light":
-        st.session_state.theme = "dark"
-    else:
-        st.session_state.theme = "light"
+    st.session_state.theme = (
+        "dark"
+        if st.session_state.theme == "light"
+        else "light"
+    )
 
 
 def apply_theme():
-    """Apply CSS according to selected theme."""
 
     if st.session_state.theme == "dark":
 
-        st.markdown("""
-<style>
+        st.markdown(
+            """
+            <style>
 
-.stApp{
-    background:#0E1117;
-    color:#FAFAFA;
-}
+            .stApp {
+                background-color: #0E1117;
+            }
 
-section[data-testid="stSidebar"]{
-    background:#161B22;
-}
 
-section[data-testid="stSidebar"] *{
-    color:#FAFAFA !important;
-}
+            section[data-testid="stSidebar"] {
+                background-color: #161B22;
+            }
 
-div.stButton > button{
-    background:#2563EB;
-    color:white;
-    border-radius:12px;
-}
 
-</style>
-""", unsafe_allow_html=True)
+            section[data-testid="stSidebar"] * {
+                color: white !important;
+            }
+
+
+            h1,h2,h3,h4,h5,h6 {
+                color:white !important;
+            }
+
+
+            .stMarkdown p,
+            .stMarkdown li {
+                color:#E5E7EB !important;
+            }
+
+
+            label {
+                color:white !important;
+            }
+
+
+            textarea {
+                background-color:#161B22 !important;
+                color:white !important;
+            }
+
+
+            textarea::placeholder {
+                color:#9CA3AF !important;
+            }
+
+
+            div[data-testid="stExpander"] {
+                background-color:#161B22 !important;
+            }
+
+
+            div[data-testid="stExpander"] * {
+                color:white !important;
+            }
+
+
+            .main-title {
+                color:white !important;
+            }
+
+
+            .sub-title {
+                color:#CBD5E1 !important;
+            }
+
+
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
 
     else:
 
-        st.markdown("""
-<style>
+        st.markdown(
+            """
+            <style>
 
-.stApp{
-    background:#F7F9FC;
-    color:#111827;
-}
+            .stApp {
+                background-color:#F7F9FC;
+            }
 
-section[data-testid="stSidebar"]{
-    background:#FFFFFF;
-}
 
-section[data-testid="stSidebar"] *{
-    color:#111827 !important;
-}
+            section[data-testid="stSidebar"] {
+                background-color:white;
+            }
 
-div.stButton > button{
-    background:#2563EB;
-    color:white;
-    border-radius:12px;
-}
 
-</style>
-""", unsafe_allow_html=True)
+            section[data-testid="stSidebar"] * {
+                color:#111827 !important;
+            }
+
+
+            h1,h2,h3,h4,h5,h6 {
+                color:#111827 !important;
+            }
+
+
+            .stMarkdown p,
+            .stMarkdown li {
+                color:#111827 !important;
+            }
+
+
+            label {
+                color:#111827 !important;
+            }
+
+
+            textarea {
+                background-color:white !important;
+                color:#111827 !important;
+            }
+
+
+            textarea::placeholder {
+                color:#6B7280 !important;
+            }
+
+
+            div[data-testid="stExpander"] {
+                background-color:white !important;
+            }
+
+
+            div[data-testid="stExpander"] * {
+                color:#111827 !important;
+            }
+
+
+            .main-title {
+                color:#111827 !important;
+            }
+
+
+            .sub-title {
+                color:#374151 !important;
+            }
+
+
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )

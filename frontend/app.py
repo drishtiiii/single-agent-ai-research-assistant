@@ -1,4 +1,6 @@
+
 import streamlit as st
+
 from api import (
     delete_report,
     get_history,
@@ -7,6 +9,7 @@ from api import (
     get_report,
     start_research,
 )
+
 from theme import (
     apply_theme,
     initialize_theme,
@@ -18,6 +21,7 @@ st.set_page_config(
     page_icon="🤖",
     layout="wide",
 )
+
 initialize_theme()
 apply_theme()
 
@@ -28,28 +32,62 @@ apply_theme()
 st.markdown(
     """
     <style>
-        .main-title {
-            font-size: 42px;
-            font-weight: 800;
-            margin-top: -60px;
-            margin-bottom: 12px;
-        }
 
-        .sub-title {
-            font-size: 22px;
-            font-weight: 500;
-            color: #666;
-            margin-bottom: 30px;
-        }
+    /* Main application spacing */
+    .block-container {
+        padding-top: 3.5rem;
+        padding-bottom: 2rem;
+    }
 
-        .block-container {
-            padding-top: 5rem;
-        }
+
+    /* Main title */
+    .main-title {
+        font-size: 42px;
+        font-weight: 800;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+
+    /* Subtitle */
+    .sub-title {
+        font-size: 22px;
+        font-weight: 500;
+        margin-bottom: 35px;
+    }
+
+
+    /* Text area */
+    textarea {
+        font-size: 16px !important;
+    }
+
+
+    /* Buttons */
+    .stButton button {
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+    }
+
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        padding-top: 2rem;
+    }
+
+
+    /* Expanders in history */
+    div[data-testid="stExpander"] {
+        border-radius: 12px;
+    }
+
+
     </style>
     """,
     unsafe_allow_html=True,
 )
-
 # -------------------------
 # SIDEBAR
 # -------------------------
