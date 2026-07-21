@@ -21,6 +21,34 @@ st.set_page_config(
 initialize_theme()
 apply_theme()
 
+# -------------------------
+# CUSTOM HEADER STYLE
+# -------------------------
+
+st.markdown(
+    """
+    <style>
+        .main-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-top: -60px;
+            margin-bottom: 12px;
+        }
+
+        .sub-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .block-container {
+            padding-top: 5rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # -------------------------
 # SIDEBAR
@@ -59,16 +87,19 @@ page = st.sidebar.radio(
 # -------------------------
 
 if page == "🏠 Research":
-    st.title("🤖 Single-Agent AI Research Assistant")
 
     st.markdown(
         """
-Generate AI-powered research reports using: 
-**LangGraph**
-**Groq**
-**DuckDuckGo Search**
-**Wikipedia**.
-"""
+        <div class="main-title">
+            🤖 Single-Agent AI Research Assistant
+        </div>
+
+        <div class="sub-title">
+            Generate AI-powered research reports using LangGraph, Groq,
+            DuckDuckGo Search, and Wikipedia.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     query = st.text_area(
