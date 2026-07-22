@@ -4,6 +4,7 @@ from app.api.routes.health import router as health_router
 from app.api.routes.history import router as history_router
 from app.api.routes.llm import router as llm_router
 from app.api.routes.research import router as research_router
+from app.api.translate import router as translate_router
 
 router = APIRouter()
 
@@ -29,4 +30,10 @@ router.include_router(
 router.include_router(
     llm_router,
     tags=["LLM"],
+)
+
+# Translation
+router.include_router(
+    translate_router,
+    tags=["Translation"],
 )

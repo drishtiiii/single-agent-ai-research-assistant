@@ -8,6 +8,7 @@ from api import (
     get_pdf_file,
     get_report,
     start_research,
+    translate_report,
 )
 
 from theme import (
@@ -115,6 +116,7 @@ page = st.sidebar.radio(
     [
         "🏠 Research",
         "📜 History",
+        "🌐 Translator",
         "ℹ️ About",
     ],
     label_visibility="collapsed",
@@ -258,6 +260,85 @@ elif page == "📜 History":
 
     except Exception as e:
         st.error(f"Error loading history: {e}")
+
+# -------------------------
+# TRANSLATOR
+# -------------------------
+
+elif page == "🌐 Translator":
+
+    st.title("🌐 AI Research Translator")
+
+    try:
+
+        history = get_history()["history"]
+
+        completed_reports = [
+            item for item in history
+            if item["status"] == "COMPLETED"
+        ]
+
+        if not completed_reports:
+
+            st.info(
+                "No completed research reports available for translation."
+            )
+
+        else:
+
+            selected_report = st.selectbox(
+                "Select Research Report",
+                completed_reports,
+                format_func=lambda x: x["query"],
+            )
+
+            language = st.selectbox(
+                "Translate To",
+                [
+                    "English",
+                    "German",
+                    "French",
+                    "Spanish",
+                    "Russian",
+                ],
+            )
+
+            if st.button(
+                "🌐 Translate Report",
+                use_container_width=True,
+            ):
+
+                report = get_report(
+                    selected_report["id"]
+                )["history"]
+
+                with st.spinner("Translating..."):
+
+                    translated = translate_report(
+                        report["report"],
+                        language,
+                    )
+
+                left, right = st.columns(2)
+
+                with left:
+
+                    st.subheader("Original Report")
+
+                    st.markdown(report["report"])
+
+                with right:
+
+                    st.subheader(f"{language} Translation")
+
+                    st.markdown(
+                        translated["translated_report"]
+                    )
+
+    except Exception as e:
+
+        st.error(str(e))
+
 
 # -------------------------
 # ABOUT

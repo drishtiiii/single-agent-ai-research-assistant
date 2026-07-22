@@ -55,3 +55,20 @@ def get_pdf_file(history_id: int):
     )
     response.raise_for_status()
     return response.content
+
+def translate_report(
+    report: str,
+    language: str,
+):
+    response = requests.post(
+        f"{API_URL}/translate",
+        json={
+            "report": report,
+            "language": language,
+        },
+        timeout=120,
+    )
+
+    response.raise_for_status()
+
+    return response.json()
