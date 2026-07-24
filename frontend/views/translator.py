@@ -1,5 +1,4 @@
 import streamlit as st
-
 from api import (
     get_history,
     get_report,
@@ -11,19 +10,13 @@ def render_translator_page():
 
     st.title("🌍 AI Research Translator")
 
-    st.caption(
-        "Translate your AI-generated research reports into multiple languages."
-    )
+    st.caption("Translate your AI-generated research reports into multiple languages.")
 
     st.divider()
 
     history = get_history()["history"]
 
-    completed = [
-        item
-        for item in history
-        if item["status"] == "COMPLETED"
-    ]
+    completed = [item for item in history if item["status"] == "COMPLETED"]
 
     if not completed:
         st.info("No completed reports available.")
@@ -61,7 +54,6 @@ def render_translator_page():
     report = get_report(selected["id"])["history"]
 
     with st.spinner("🌐 Translating report..."):
-
         translated = translate_report(
             report["report"],
             language,
@@ -76,7 +68,6 @@ def render_translator_page():
     # --------------------------------------------------
 
     with left:
-
         st.subheader("📄 Original Report")
 
         st.markdown(
@@ -125,7 +116,6 @@ background-color:rgba(255,255,255,0.02);
     # --------------------------------------------------
 
     with right:
-
         st.subheader(f"🌍 {language} Translation")
 
         st.markdown(

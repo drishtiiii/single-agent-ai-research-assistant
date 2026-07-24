@@ -1,6 +1,4 @@
-
 import streamlit as st
-
 from api import (
     delete_report,
     get_history,
@@ -10,7 +8,6 @@ from api import (
     start_research,
     translate_report,
 )
-
 from theme import (
     apply_theme,
     initialize_theme,
@@ -127,7 +124,6 @@ page = st.sidebar.radio(
 # -------------------------
 
 if page == "🏠 Research":
-
     st.markdown(
         """
         <div class="main-title">
@@ -266,26 +262,17 @@ elif page == "📜 History":
 # -------------------------
 
 elif page == "🌐 Translator":
-
     st.title("🌐 AI Research Translator")
 
     try:
-
         history = get_history()["history"]
 
-        completed_reports = [
-            item for item in history
-            if item["status"] == "COMPLETED"
-        ]
+        completed_reports = [item for item in history if item["status"] == "COMPLETED"]
 
         if not completed_reports:
-
-            st.info(
-                "No completed research reports available for translation."
-            )
+            st.info("No completed research reports available for translation.")
 
         else:
-
             selected_report = st.selectbox(
                 "Select Research Report",
                 completed_reports,
@@ -307,13 +294,9 @@ elif page == "🌐 Translator":
                 "🌐 Translate Report",
                 use_container_width=True,
             ):
-
-                report = get_report(
-                    selected_report["id"]
-                )["history"]
+                report = get_report(selected_report["id"])["history"]
 
                 with st.spinner("Translating..."):
-
                     translated = translate_report(
                         report["report"],
                         language,
@@ -322,21 +305,16 @@ elif page == "🌐 Translator":
                 left, right = st.columns(2)
 
                 with left:
-
                     st.subheader("Original Report")
 
                     st.markdown(report["report"])
 
                 with right:
-
                     st.subheader(f"{language} Translation")
 
-                    st.markdown(
-                        translated["translated_report"]
-                    )
+                    st.markdown(translated["translated_report"])
 
     except Exception as e:
-
         st.error(str(e))
 
 

@@ -1,6 +1,6 @@
 import streamlit as st
-
 from api import start_research
+from components.feature_chips import feature_chips
 from components.hero import hero
 
 
@@ -12,7 +12,7 @@ def render_research_page():
     hero()
 
     st.markdown(
-    """
+        """
     <div style="
     padding:25px;
     border-radius:18px;
@@ -33,14 +33,14 @@ def render_research_page():
     </p>
     </div>
     """,
-    unsafe_allow_html=True,
-)
+        unsafe_allow_html=True,
+    )
     query = st.text_area(
-    "",
-    placeholder="Example: Impact of Generative AI on Healthcare",
-    height=180,
-    label_visibility="collapsed",
-)
+        "",
+        placeholder="Example: Impact of Generative AI on Healthcare",
+        height=180,
+        label_visibility="collapsed",
+    )
     st.write("")
 
     if st.button(
@@ -50,31 +50,24 @@ def render_research_page():
         st.write("")
 
         if not query.strip():
-
             st.warning("Please enter a research topic.")
 
         else:
-
             with st.spinner("Generating research report..."):
-
                 try:
-
                     response = start_research(query)
 
                     st.success("Research job started successfully!")
 
-                    st.info(
-                        f"Job ID: {response['job_id']}"
-                    )
+                    st.info(f"Job ID: {response['job_id']}")
 
                     st.markdown("### Status")
 
                     st.write(response["report"])
 
                 except Exception as e:
-
                     st.error(str(e))
-from components.feature_chips import feature_chips
+
 
 st.divider()
 

@@ -89,9 +89,7 @@ class PDFExporter:
         )
 
         for line in report.split("\n"):
-
             if line.strip():
-
                 story.append(
                     Paragraph(
                         line,
@@ -100,7 +98,6 @@ class PDFExporter:
                 )
 
             else:
-
                 story.append(
                     Spacer(
                         1,

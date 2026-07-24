@@ -4,7 +4,6 @@ from app.api.routes.health import router as health_router
 from app.api.routes.history import router as history_router
 from app.api.routes.llm import router as llm_router
 from app.api.routes.research import router as research_router
-from app.api.translate import router as translate_router
 from app.api.routes.translation_pdf import router as translation_pdf_router
 
 router = APIRouter()

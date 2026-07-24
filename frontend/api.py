@@ -56,6 +56,7 @@ def get_pdf_file(history_id: int):
     response.raise_for_status()
     return response.content
 
+
 def translate_report(
     report: str,
     language: str,
