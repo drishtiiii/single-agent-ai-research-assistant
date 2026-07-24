@@ -1,8 +1,9 @@
 import re
 from pathlib import Path
 
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 from app.core.logger import logger
 
@@ -18,65 +19,94 @@ class PDFExporter:
         report: str,
         output_dir: str = "reports",
     ) -> str:
-        """
-        Export a research report to a PDF file.
 
-        Returns the path of the generated file.
-        """
-
-        # Create reports directory
         Path(output_dir).mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        # -------------------------
-        # Create a safe filename
-        # -------------------------
         safe_title = title.strip().lower()
 
-        # Remove invalid filename characters
         safe_title = re.sub(
             r'[\\/*?:"<>|]',
             "",
             safe_title,
         )
 
-        # Replace spaces with underscores
         safe_title = safe_title.replace(" ", "_")
 
-        # Remove duplicate underscores
         safe_title = re.sub(
             r"_+",
             "_",
             safe_title,
         )
 
-        # Remove leading/trailing underscores
         safe_title = safe_title.strip("_")
 
-        # Fallback filename
         if not safe_title:
             safe_title = "research_report"
 
-        filename = f"{safe_title}.pdf"
+        filepath = Path(output_dir) / f"{safe_title}.pdf"
 
-        filepath = Path(output_dir) / filename
-
-        # -------------------------
-        # Build PDF
-        # -------------------------
-        doc = SimpleDocTemplate(str(filepath))
+        doc = SimpleDocTemplate(
+            str(filepath),
+            leftMargin=40,
+            rightMargin=40,
+            topMargin=40,
+            bottomMargin=40,
+        )
 
         styles = getSampleStyleSheet()
 
-        story = [
-            Paragraph(title, styles["Title"]),
+        title_style = ParagraphStyle(
+            "CustomTitle",
+            parent=styles["Title"],
+            alignment=TA_CENTER,
+            spaceAfter=20,
+        )
+
+        body_style = ParagraphStyle(
+            "Body",
+            parent=styles["BodyText"],
+            leading=22,
+            spaceAfter=8,
+        )
+
+        story = []
+
+        story.append(
             Paragraph(
-                report.replace("\n", "<br/>"),
-                styles["BodyText"],
-            ),
-        ]
+                title,
+                title_style,
+            )
+        )
+
+        story.append(
+            Spacer(
+                1,
+                20,
+            )
+        )
+
+        for line in report.split("\n"):
+
+            if line.strip():
+
+                story.append(
+                    Paragraph(
+                        line,
+                        body_style,
+                    )
+                )
+
+            else:
+
+                story.append(
+                    Spacer(
+                        1,
+                        10,
+                    )
+                )
 
         doc.build(story)
 
